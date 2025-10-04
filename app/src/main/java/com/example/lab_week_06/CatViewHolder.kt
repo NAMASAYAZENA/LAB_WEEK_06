@@ -15,7 +15,7 @@ private const val UNKNOWN_SYMBOL = "?"
 class CatViewHolder(
     private val containerView: View,
     private val imageLoader: ImageLoader,
-    private val onClickListener: CatAdapter.OnClickListener // 🔹 Ganti di sini
+    private val onClickListener: CatAdapter.OnClickListener
 ) : RecyclerView.ViewHolder(containerView) {
 
     private val catBiographyView: TextView by lazy {
@@ -35,7 +35,6 @@ class CatViewHolder(
     }
 
     fun bindData(cat: CatModel) {
-        // Klik item
         containerView.setOnClickListener {
             onClickListener.onItemClick(cat)
         }
