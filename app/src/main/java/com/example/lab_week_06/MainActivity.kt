@@ -2,6 +2,7 @@ package com.example.lab_week_06
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab_week_06.model.CatBreed
@@ -15,23 +16,20 @@ class MainActivity : AppCompatActivity() {
     }
 
     private val catAdapter by lazy {
-        // Glide digunakan untuk memuat gambar dari internet
-        CatAdapter(layoutInflater, GlideImageLoader(this))
+        // Listener diteruskan ke adapter
+        CatAdapter(layoutInflater, GlideImageLoader(this), object : CatAdapter.OnClickListener {
+            override fun onItemClick(cat: CatModel) = showSelectionDialog(cat)
+        })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Pasang adapter ke RecyclerView
         recyclerView.adapter = catAdapter
+        recyclerView.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        // Gunakan layout manager vertikal (daftar dari atas ke bawah)
-        recyclerView.layoutManager = LinearLayoutManager(
-            this, LinearLayoutManager.VERTICAL, false
-        )
-
-        // Tambahkan data ke adapter
         catAdapter.setData(
             listOf(
                 CatModel(
@@ -57,5 +55,14 @@ class MainActivity : AppCompatActivity() {
                 )
             )
         )
+    }
+
+    // Munculkan pop-up dialog saat item diklik
+    private fun showSelectionDialog(cat: CatModel) {
+        AlertDialog.Builder(this)
+            .setTitle("Cat Selected")
+            .setMessage("You have selected cat ${cat.name}")
+            .setPositiveButton("OK") { _, _ -> }
+            .show()
     }
 }
